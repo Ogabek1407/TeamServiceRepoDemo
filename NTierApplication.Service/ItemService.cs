@@ -47,7 +47,16 @@ namespace NTierApplication.Service
 
         public void Delete(long itemId)
         {
-            throw new NotImplementedException();
+            var entity=ItemRepository.
+                GetAll().
+                FirstOrDefault(x=>
+                x.ItemId == itemId);
+            if(entity is null)
+            {
+                throw new ParameterInvalidException("no such item");
+            }
+            ItemRepository.Delete(entity);
+            ItemRepository.SaveChanges();
         }
 
         public ItemViewModel GetById(long id)
@@ -67,8 +76,6 @@ namespace NTierApplication.Service
                 throw new EntryNotFoundException("No such item");
             }
             return result;
-            //.Where(x => x.ItemId == id)
-            //.FirstOrDefault();
         }
 
         public ICollection<ItemViewModel> GetItems()
@@ -84,7 +91,24 @@ namespace NTierApplication.Service
 
         public void Update(ItemViewModel item)
         {
-            throw new NotImplementedException();
+            if(item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+            if(item.ItemId == null)
+            {
+                throw new ParameterInvalidException("no such item");
+            }
+            var data=ItemRepository.GetAll().FirstOrDefault(x=>x.ItemId== item.ItemId);
+            if(data is null)
+            {
+                throw new ParameterInvalidException("no such item");
+            }
+            data.ItemName = item.ItemName;
+            data.ItemDate=item.ItemDate;
+            data.ItemType=data.ItemType;
+            ItemRepository.Update(data);
+            ItemRepository.SaveChanges();
         }
     }
 }

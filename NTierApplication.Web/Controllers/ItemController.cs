@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NTierApplication.Repository;
 using NTierApplication.Service;
 using NTierApplication.Service.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
@@ -37,6 +38,23 @@ namespace NTierApplication.Web.Controllers
         public ItemViewModel GetById(long id)
         {
             return ItemService.GetById(id);
+        }
+
+        [HttpDelete]
+        [Route("Delete:{id}")]
+        public ItemViewModel Delete(long id)
+        {
+            var item = ItemService.GetById(id);
+            ItemService.Delete(id);
+            return item;
+        }
+
+        [HttpPut]
+        [Route("Update")]
+        public ItemViewModel Update(ItemViewModel item)
+        {
+            ItemService.Update(item);
+            return item;
         }
     }
 }
