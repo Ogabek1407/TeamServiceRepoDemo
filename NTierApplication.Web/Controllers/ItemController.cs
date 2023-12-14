@@ -25,7 +25,9 @@ namespace NTierApplication.Web.Controllers
             return ItemService.GetItems();
         }
 
-        [HttpPost(Name = "CreateNew")]
+        [HttpPost]
+        [Route("")]
+        [SwaggerOperation(OperationId = "create")]
         public ItemViewModel CreateNew(ItemViewModel itemViewModel)
         {
             ItemService.CreateNew(itemViewModel);
@@ -41,7 +43,8 @@ namespace NTierApplication.Web.Controllers
         }
 
         [HttpDelete]
-        [Route("Delete:{id}")]
+        [Route("{id}")]
+        [SwaggerOperation(OperationId = "Delete")]
         public ItemViewModel Delete(long id)
         {
             var item = ItemService.GetById(id);
@@ -50,7 +53,8 @@ namespace NTierApplication.Web.Controllers
         }
 
         [HttpPut]
-        [Route("Update")]
+        [Route("")]
+        [SwaggerOperation(OperationId = "Update")]
         public ItemViewModel Update(ItemViewModel item)
         {
             ItemService.Update(item);
